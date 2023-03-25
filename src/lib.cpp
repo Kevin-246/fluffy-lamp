@@ -13,6 +13,15 @@ bool SF::get_bit(uint8_t* a, size_t pos){
     return bit;
 }
 
+bool SF::sget_bit(int8_t* a, size_t pos){
+    size_t byte_index = pos / 8;
+    size_t bit_offset = pos % 8;
+
+    int8_t byte_value = *(a + byte_index);
+    bool bit = byte_value & (1 << bit_offset);
+    return bit;
+}
+
 uint8_t* SF::bit_add(uint8_t* a, uint8_t* b, size_t size){
     uint8_t* result = reinterpret_cast<uint8_t*>(std::calloc(size, sizeof(uint8_t)));
     bool num1;
@@ -40,6 +49,36 @@ uint8_t* SF::bit_add(uint8_t* a, uint8_t* b, size_t size){
                 break;
             default:
                 // Sum equals to 0
+                carry = 0;
+                break;
+        }
+    }
+    return result;
+}
+
+int8_t* SF::sbit_add(int8_t* a, int8_t* b, size_t size){
+    int8_t* result = reinterpret_cast<int8_t*>(std::calloc(size, sizeof(int8_t)));
+    bool num1;
+    bool num2;
+    bool carry = 0;
+    int sum;
+    for(size_t i = 0; i < size * 8; i++){
+        num1 = SF::sget_bit(a, i);
+        num2 = SF::sget_bit(b, i);
+        sum = num1 + num2 + carry;
+        switch(sum){
+            case 1:
+                carry = 0;
+                enable_bit(result, i);
+                break;
+            case 2:
+                carry = 1;
+                break;
+            case 3:
+                carry = 1;
+                enable_bit(result, i);
+                break;
+            default:
                 carry = 0;
                 break;
         }
