@@ -6,6 +6,7 @@
 
 #define log(str) std::cout << str << std::endl
 #define enable_bit(ptr, num) *(ptr + num / 8) |= (1 << (num % 8))
+#define disable_bit(ptr, num) *(ptr + num / 8) &= ~(1 << (num % 8))
 
 namespace SF{
     int mul(int a, int b);
