@@ -4,7 +4,7 @@ add_executable(main src/main.cpp)
 add_compile_options(-Wall -Wextra)
 
 set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
-set(LIBRARY_OUTPUT_PATH /Users/zh/Desktop/Git/sfu/lib/)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 set(CMAKE_BUILD_TYPE Release)
 
 add_library(SL SHARED src/lib.cpp)
