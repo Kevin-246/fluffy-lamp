@@ -1,6 +1,6 @@
 #include <lib.hpp>
 
-int SF::mul(int a, int b){
+inline int SF::mul(int a, int b){
     return a * b;
 }
 
@@ -84,4 +84,41 @@ int8_t* SF::sbit_add(int8_t* a, int8_t* b, size_t size){
         }
     }
     return result;
+}
+
+std::string SF::half(std::string str, bool* remainder){
+    std::string result;
+    int a;
+    int b = str[0];
+    int quotient;
+    bool has_remainder = false;
+    for(size_t i = 0; i < str.size(); i++){
+        a = b - '0';
+        if(i == str.size() - 1){
+            has_remainder = a % 2;
+        }
+        b = str[i + 1];
+        quotient = a / 2;
+        if(a % 2 == 1){
+            b += 10;
+        }
+        result += quotient + '0';
+    }
+    result = SF::remove_zeros(result);
+    if(remainder == NULL) return result;
+    if(has_remainder) *remainder = true;
+    return result;
+}
+
+std::string SF::deque_to_str(std::deque<char> deque){
+    std::string result(deque.begin(), deque.end());
+    return result;
+}
+
+std::string SF::remove_zeros(std::string str){
+    std::size_t pos = str.find_first_not_of('0');
+    if(pos != std::string::npos){
+        return str.substr(pos);
+    }
+    return "0";
 }

@@ -5,7 +5,7 @@ add_compile_options(-Wall -Wextra)
 
 set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
-set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Debug)
 
 add_library(SL SHARED src/lib.cpp)
 target_link_libraries(main PRIVATE SL)
