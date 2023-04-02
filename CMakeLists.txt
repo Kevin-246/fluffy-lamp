@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.26.1)
 project(main)
 add_executable(main src/main.cpp)
-add_compile_options(-Wall -Wextra)
+add_compile_options(-Wall -Wextra -Wpedantic -Wshadow -Wcast-qual -Wno-newline-eof)
 
 set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
