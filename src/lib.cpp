@@ -86,7 +86,7 @@ int8_t* SF::Sbit_add(int8_t* a, int8_t* b, size_t size){
     return result;
 }
 
-std::string SF::Half(std::string str, bool* remainder){
+std::string SF::Half(std::string str, bool& remainder){
     std::string result;
     int a;
     int b = str[0];
@@ -105,8 +105,28 @@ std::string SF::Half(std::string str, bool* remainder){
         result += quotient + '0';
     }
     result = SF::Remove_zeros(result);
-    if(remainder == NULL) return result;
-    if(has_remainder) *remainder = true;
+    if(has_remainder) remainder = true;
+    else{
+        remainder = false;
+    }
+    return result;
+}
+
+std::string SF::Half(std::string str){
+    std::string result;
+    int a;
+    int b = str[0];
+    int quotient;
+    for(size_t i = 0; i < str.size(); i++){
+        a = b - '0';
+        b = str[i + 1];
+        quotient = a / 2;
+        if(a % 2 == 1){
+            b += 10;
+        }
+        result += quotient + '0';
+    }
+    result = SF::Remove_zeros(result);
     return result;
 }
 
@@ -116,25 +136,26 @@ std::string SF::Double(std::string str){
     int b = str[str.size() - 1];
     int carry = 0;
     int product;
-    for(size_t i = str.size() - 1; i >= 0; i--){
+    int temp = 0;
+    for(long i = str.size() - 1; i >= 0; i--){
         a = b - '0';
-        product = a * 2;
+        product = a * 2 + temp;
         carry = product / 10;
-        if(i > 0){
-            b = str[i];
-        }
-        if(i <= 0 && carry != 0){
+        product %= 10;
+        if(i > 0) b = str[i - 1];
+        if(i == 0){
              result.push_front(product + '0');
              break;
         }
+        if(temp) temp = 0;
         if(carry){
-            b += carry;
+            temp += carry;
             carry = 0;
         }
-        result.push_front(product + carry + '0');
+        result.push_front(product + '0');
     }
     if(carry){
-        result.push_front(carry);
+        result.push_front(carry + '0');
     }
     return SF::Deque_to_str(result);
 }
@@ -150,4 +171,20 @@ std::string SF::Remove_zeros(std::string str){
         return str.substr(pos);
     }
     return "0";
+}
+
+uint8_t* SF::Str_to_bin(std::string str, size_t bytes){
+    uint8_t* result = reinterpret_cast<uint8_t*>(std::calloc(bytes, sizeof(uint8_t*)));
+    std::string temp = str;
+    bool bit;
+    size_t i = str.size() - 1 * 8;
+    size_t j = 0;
+    while(i >= 0){
+        temp = SF::Half(temp, bit);
+        if(bit) enable_bit(result, j);
+        if(temp == "0") break;
+        i--;
+        j++; 
+    }
+    return result;
 }

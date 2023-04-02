@@ -8,7 +8,19 @@
 
 #define ptr(str) std::cout << str << std::endl
 #define err(str) std::cerr << str << std::endl
+
+/**
+ * Enables a specific bit in a uint8_t*.
+ * \param ptr The pointer
+ * \param num The index of the bit from the least significant bit.
+*/
 #define enable_bit(ptr, num) *(ptr + num / 8) |= (1 << (num % 8))
+
+/**
+ * Disables a specific bit in a uint8_t*.
+ * \param ptr The pointer
+ * \param num The index of the bit from the least significant bit.
+*/
 #define disable_bit(ptr, num) *(ptr + num / 8) &= ~(1 << (num % 8))
 /**
  * This forces compiler to inline a specific function.
@@ -55,13 +67,25 @@ namespace SF{
     int8_t* Sbit_add(int8_t* a, int8_t* b, size_t size);
 
     /**
-     * Divides a string by 2 as if it's an integer.
+     * Divides a string by 2 as if it's an integer. Works only for positive numbers.
      * \param str The input that is being divided by 2
      * \param remainder The variable that the remainder will be stored in. Replace with NULL if the remainder is not required
      * \return An std::string that is the result of the division
     */
-    std::string Half(std::string str, bool* remainder);
+    std::string Half(std::string str, bool& remainder);
 
+    /**
+     * Divides a string by 2 as if it's an integer. Works only for positive numbers.
+     * \param str The input that is being divided by 2
+     * \return An std::string that is the result of the division
+    */
+    std::string Half(std::string str);
+
+    /**
+     * Doubles an string like it's an integer. Works only for positive numbers.
+     * \param str The string being doubled.
+     * \return String that has been doubled.
+    */
     std::string Double(std::string str);
 
     /**
@@ -77,4 +101,12 @@ namespace SF{
      * \return String with no zeros in front.
     */
     std::string Remove_zeros(std::string str);
-};
+
+    /**
+     * Turns a string into binary and stores it in a uint8_t*.
+     * \param str The string being turned into binary.
+     * \param bytes The size of the memory being allocated in bytes.
+     * \return Pointer to the place in memory where the string is turning into binary.
+    */
+    uint8_t* Str_to_bin(std::string str, size_t bytes);
+}
